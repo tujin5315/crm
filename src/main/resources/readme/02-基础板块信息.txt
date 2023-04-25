@@ -1,0 +1,36 @@
+一、全局异常统一处理
+    为解决controller层中每个方法报出的异常，采用全局异常统一处理的方式
+    难点：方法返回的结果会有两种，一个是视图，一个是数据 数据转换成json格式输出
+        解决办法：使用判断，把两种情况分别展示出来
+    代码思想：
+        首先先进行判断，返回值是哪种类型 ---- 判断是否有responseBody响应
+            若有，则为json，若没有，则为视图
+                在controller层中，若是json格式，都会在方法上加上responseBody的注解
+            具体的判别方法：通过handler(方法对象)来进行判别
+        其次根据所判定的结果输出值
+            在视图层 通过modelandview 接收数据 并返回出去
+            在数据层 通过resultInfo接收数据，并把数据以json的格式传到前端
+                需要用到输出流
+
+二、非法拦截请求
+    利用拦截器，对于未登录客户，进行数据拦截。阻止访问
+    配置拦截器的几个要点：
+        1.继承HandlerInterceptorAdapter适配器  重写preHandle方法
+            获取cookie中的id  通过id来判断用户信息 是否非法登录
+        2.对于信息进行判断，阻止登录时需要重定向到登录界面
+            在全局异常那处理非法登录异常 返回视图重定向到登录界面
+        3.需要对拦截器进行配置，确定哪些信息需要拦截
+            继承WebMvcConfigurerAdapter类，加上配置注解@Configuration
+            重写添加拦截器的方法.addInterceptor(noLoginInterceptor())
+            注意此方法需要一个拦截器的实例
+            @Bean // 返回的是方法的实例对象
+            public NoLoginInterceptor noLoginInterceptor(){
+                return new NoLoginInterceptor();
+            }
+             ---- 故 使用注解@Bean去注解一个拦截器(返回的是方法的实例对象)
+                设置拦截路径  .addPathPatterns("/**")
+                设置不拦截路径.excludePathPatterns
+
+三、记住密码
+    利用cookie储存信息
+        设置cookie的储存时间
