@@ -5,8 +5,10 @@
 </head>
 <body class="childrenBody">
 <form class="layui-form" style="width:80%;">
+    <#--  设置营销机会id的隐藏域  -->
     <input name="id" type="hidden" value="${(saleChance.id)!}"/>
-    <input name="man" type="hidden" value="${(saleChance.assignMan)!}"/>
+    <#--  设置指派人的隐藏域  -->
+    <input name="man" id="assignManId" type="hidden" value="${(saleChance.assignMan)!}"/>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">客户名称</label>
         <div class="layui-input-block">
@@ -71,10 +73,10 @@
             <button class="layui-btn layui-btn-lg" lay-submit=""
                     lay-filter="addOrUpdateSaleChance">确认
             </button>
-            <button class="layui-btn layui-btn-lg layui-btn-normal">取消</button>
+            <button class="layui-btn layui-btn-lg layui-btn-normal" id="closeBtn">取消</button>
         </div>
     </div>
 </form>
-<script type="text/javascript" src="${ctx}/static/js/saleChance/add.update.js"></script>
+<script type="text/javascript" src="${ctx}/js/saleChance/add.update.js"></script>
 </body>
 </html>

@@ -7,7 +7,16 @@ public class SaleChanceQuery extends BaseQuery {
     // 条件参数
     private String customerName; // 客户名
     private String createMan; // 创建人
-    private String state; // 分配状态
+    private Integer state; // 分配状态
+    private Integer assignMan; // 指派人
+
+    public Integer getAssignMan() {
+        return assignMan;
+    }
+
+    public void setAssignMan(Integer assignMan) {
+        this.assignMan = assignMan;
+    }
 
     private String devResult; //
 
@@ -27,11 +36,11 @@ public class SaleChanceQuery extends BaseQuery {
         this.createMan = createMan;
     }
 
-    public String getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 }

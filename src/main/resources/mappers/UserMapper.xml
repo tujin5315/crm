@@ -145,4 +145,24 @@
         from t_user
     where user_name = #{userName}
   </select>
+  <select id="queryAllSales" resultType="java.util.Map">
+    select
+        u.id,u.user_name uname
+    from
+        t_user u
+    left join
+        t_user_role ur
+    on
+        u.id = ur.user_id
+    left join
+        t_role r
+    on
+        r.id = ur.role_id
+    where
+        u.is_valid=1
+    and
+        r.is_valid=1
+    and
+        r.role_name = '销售'
+  </select>
 </mapper>

@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService extends BaseService<User,Integer> {
@@ -130,5 +132,13 @@ public class UserService extends BaseService<User,Integer> {
         AssertUtil.isTrue(oldPwd.equals(newPwd),"原密码不能与新密码相同");
         // 判断新密码和确认密码是否一致
         AssertUtil.isTrue(!newPwd.equals(repeatPwd),"新密码和确认密码不一致");
+    }
+
+    /**
+     * 查询所有的销售人员
+     * @return
+     */
+    public List<Map<String,Object>> queryAllSales(){
+        return userMapper.queryAllSales();
     }
 }

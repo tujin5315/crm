@@ -43,6 +43,7 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
          * 设置默认值
          */
         ModelAndView mv = new ModelAndView();
+        // 报错视图名
         mv.setViewName("error");
         mv.addObject("code",500);
         mv.addObject("msg","系统异常，请重试...");
