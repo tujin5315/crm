@@ -100,5 +100,19 @@
     实质：是把数据的有效性设置为0，不会展示给前端看，数据依然保留
     sql语句：update is_valid = 0 set t_sale_chance where id in (ids[])
     根据表单进行更改 利用ajax传输数据
+    后端
+        1、controller层
+            接收前端发出的请求，接收id参数，
+            调用service层方法，返回结果
+        2、service层
+            id参数校验
+            调用dao层方法
+            对返回的受影响行数进行判断
+        3、dao层
+            重写sql语句
+            接收传递的参数进行改写数据库中的值
+            返还结果
+    前端
+        使用ajax接收数据，并进行相应处理
 
 

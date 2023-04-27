@@ -5,10 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.msbtj.crm.base.BaseService;
 import com.msbtj.crm.dao.CusDevPlanMapper;
 import com.msbtj.crm.query.CusDevPlanQuery;
-import com.msbtj.crm.query.SaleChanceQuery;
 import com.msbtj.crm.utils.AssertUtil;
 import com.msbtj.crm.vo.CusDevPlan;
-import com.msbtj.crm.vo.SaleChance;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class CusDevPlanService extends BaseService<CusDevPlan,String> {
+public class CusDevPlanService extends BaseService<CusDevPlan,Integer> {
     @Resource
     private CusDevPlanMapper cusDevPlanMapper;
 
@@ -69,6 +67,34 @@ public class CusDevPlanService extends BaseService<CusDevPlan,String> {
         cusDevPlan.setUpdateDate(new Date());
         /* 执行添加操作，判断受影响的行数 */
         AssertUtil.isTrue(cusDevPlanMapper.insertSelective(cusDevPlan)!=1,"计划项数据添加失败");
+    }
+
+    /**
+     计划项更新操作
+         1、参数校验
+             计划项ID       非空，数据存在
+             营销机会ID      非空，数据存在
+             计划内容        非空
+             计划时间        非空
+         2、设置参数的默认值
+            修改时间        系统当前时间
+         3、执行更新操作
+            判断受影响的行数
+     * @param cusDevPlan
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateCusDevPlan(CusDevPlan cusDevPlan){
+        /* 参数校验 */
+        // 计划项ID       非空，数据存在
+        AssertUtil.isTrue(null == cusDevPlan.getId() || null == cusDevPlanMapper.selectByPrimaryKey(cusDevPlan.getId()),"系统异常，请重新尝试");
+        checkCusDevPlanParams(cusDevPlan);
+        /* 设置参数的默认值 */
+        // 修改时间        系统当前时间
+        cusDevPlan.setUpdateDate(new Date());
+        // 执行更新操作
+        AssertUtil.isTrue(cusDevPlanMapper.updateByPrimaryKeySelective(cusDevPlan)!=1,"更新失败！");
+
+
     }
 
     /**

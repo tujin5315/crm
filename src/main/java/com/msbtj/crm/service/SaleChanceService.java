@@ -112,7 +112,8 @@ public class SaleChanceService extends BaseService<SaleChance,Integer> {
 
 
     /**
-     * 1、参数校验
+      更新营销机会
+     1、参数校验
          营销机会id                  非空，数据中对应的记录存在
          customerName客户名称        非空
          linkMan 联系人              非空

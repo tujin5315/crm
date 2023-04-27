@@ -2,12 +2,9 @@ package com.msbtj.crm.controller;
 
 import com.msbtj.crm.base.BaseController;
 import com.msbtj.crm.base.ResultInfo;
-import com.msbtj.crm.enums.StateStatus;
 import com.msbtj.crm.query.CusDevPlanQuery;
-import com.msbtj.crm.query.SaleChanceQuery;
 import com.msbtj.crm.service.CusDevPlanService;
 import com.msbtj.crm.service.SaleChanceService;
-import com.msbtj.crm.utils.LoginUserUtil;
 import com.msbtj.crm.vo.CusDevPlan;
 import com.msbtj.crm.vo.SaleChance;
 import org.springframework.stereotype.Controller;
@@ -71,10 +68,25 @@ public class cusDevPlanController extends BaseController {
         return success("计划项添加成功");
     }
     /**
+     * 更新计划项
+     */
+    @PostMapping("update")
+    @ResponseBody
+    public ResultInfo updateCusDevPlan(CusDevPlan cusDevPlan){
+        // 调用service层方法
+        cusDevPlanService.updateCusDevPlan(cusDevPlan);
+        // 返回结果
+        return success("计划项更新成功");
+    }
+    /**
      * 进入添加或修改的页面
      */
     @RequestMapping("addOrUpdateCusDevPlanPage")
-    public String addOrUpdateCusDevPlanPage(){
+    public String addOrUpdateCusDevPlanPage(Integer saleChanceId,HttpServletRequest request){
+        // 将营销机会id设置到请求域中，给计划页面获取
+        request.setAttribute("saleChanceId",saleChanceId);
         return "cusDevPlan/add_update";
     }
+
+
 }

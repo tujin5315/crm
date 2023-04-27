@@ -6,6 +6,7 @@
 <body class="childrenBody">
 <form class="layui-form" style="width:80%;">
     <input name="id" type="hidden" value="${(cusDevPlan.id)!}"/>
+    <#--  营销机会id(后台设置到作用域中)  -->
     <input name="saleChanceId" type="hidden" value="${saleChanceId!}"/>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">计划项内容</label>
@@ -43,7 +44,7 @@
             <button class="layui-btn layui-btn-lg" lay-submit=""
                     lay-filter="addOrUpdateCusDevPlan">确认
             </button>
-            <button class="layui-btn layui-btn-lg layui-btn-normal">取消</button>
+            <button class="layui-btn layui-btn-lg layui-btn-normal" id="closeBtn">取消</button>
         </div>
     </div>
 </form>
