@@ -24,7 +24,7 @@ public class SaleChanceController extends BaseController {
     private SaleChanceService saleChanceService;
 
     /**
-     * 装载营销机会管理数据
+     * 机会管理数据查询(分页多条件)
      * @param saleChanceQuery
      * flag: 营销机会数据查询(分页多条件查询)
      *  如果flag的值不为空，且值为1，则表示当前查询的是客户开发计划；否则查询营销机会数据

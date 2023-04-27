@@ -1,5 +1,8 @@
 package com.msbtj.crm.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class CusDevPlan {
@@ -8,13 +11,14 @@ public class CusDevPlan {
     private Integer saleChanceId;
 
     private String planItem;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd") // 如果传递的参数是date类型，要求传入时间字符串的格式
     private Date planDate;
 
     private String exeAffect;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createDate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateDate;
 
     private Integer isValid;

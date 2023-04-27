@@ -5,7 +5,7 @@ layui.use(['table','layer'],function(){
     //计划项数据展示
     var  tableIns = table.render({
         elem: '#cusDevPlanList',
-        url : ctx+'/cus_dev_plan/list?sid='+$("input[name='id']").val(),
+        url : ctx+'/cus_dev_plan/list?saleChanceId='+$("[name='id']").val(),
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -33,10 +33,10 @@ layui.use(['table','layer'],function(){
                 openAddOrUpdateCusDevPlanDialog();
                 break;
             case "success":
-                updateSaleChanceDevResult($("input[name='id']").val(),2);
+                updateSaleChanceDevResult($("[name='id']").val(),2);
                 break;
             case "failed":
-                updateSaleChanceDevResult($("input[name='id']").val(),3);
+                updateSaleChanceDevResult($("[name='id']").val(),3);
                 break;
         };
     });
@@ -68,7 +68,7 @@ layui.use(['table','layer'],function(){
 
     // 打开添加计划项数据页面
     function openAddOrUpdateCusDevPlanDialog(id){
-        var url  =  ctx+"/cus_dev_plan/addOrUpdateCusDevPlanPage?sid="+$("input[name='id']").val();
+        var url  =  ctx+"/cus_dev_plan/addOrUpdateCusDevPlanPage?saleChanceId="+$("[name='id']").val();
         var title="计划项管理-添加计划项";
         if(id){
             url = url+"&id="+id;

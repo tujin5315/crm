@@ -69,7 +69,7 @@
 	<div class="layui-col-md12">
 		<table id="cusDevPlanList" class="layui-table"  lay-filter="cusDevPlans"></table>
 	</div>
-
+	<#-- 开发状态为0，未开发，开发状态为1，开发中。显示头部工具栏和行工具栏 -->
 	<#if saleChance.devResult==0 || saleChance.devResult==1>
 		<script type="text/html" id="toolbarDemo">
 			<div class="layui-btn-container">
