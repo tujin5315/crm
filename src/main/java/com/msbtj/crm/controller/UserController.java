@@ -4,8 +4,10 @@ import com.msbtj.crm.base.BaseController;
 import com.msbtj.crm.base.ResultInfo;
 import com.msbtj.crm.exceptions.ParamsException;
 import com.msbtj.crm.model.UserModel;
+import com.msbtj.crm.query.UserQuery;
 import com.msbtj.crm.service.UserService;
 import com.msbtj.crm.utils.LoginUserUtil;
+import com.msbtj.crm.vo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -115,5 +117,72 @@ public class UserController extends BaseController {
     @ResponseBody
     public List<Map<String,Object>> queryAllSales(){
         return userService.queryAllSales();
+    }
+
+    /**
+     * 多条件分页查询用户信息
+     * @param userQuery
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("list")
+    public Map<String,Object> selectByParams(UserQuery userQuery){
+        return userService.queryByParamsForTable(userQuery);
+    }
+    /**
+     * 进入用户列表页面
+     */
+    @RequestMapping("index")
+    public String index(){
+        return "user/user";
+    }
+
+
+    /**
+     * 进入用户添加-更新页面
+     */
+    @RequestMapping("addOrUpdateUserPage")
+    public String addOrUpdateUserPage(Integer id,HttpServletRequest request){
+        // 通过id判断到底是更新页面还是添加页面
+        if( id!=null ){
+            // 通过id查询用户对象
+            User user = userService.selectByPrimaryKey(id);
+            // 将数据设置到请求域中
+            request.setAttribute("userInfo",user);
+        }
+        return "user/add_update";
+    }
+
+    /**
+     * 用户添加操作
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("add")
+    public ResultInfo addUser(User user){
+        userService.addUser(user);
+        return success("用户添加成功");
+    }
+
+    /**
+     * 用户更新操作
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("update")
+    public ResultInfo updateUser(User user){
+        userService.updateUser(user);
+        return success("用户更新成功");
+    }
+    /**
+     * 用户批量删除操作
+     */
+    @PostMapping("delete")
+    @ResponseBody
+    public ResultInfo delete(Integer[] ids){
+        userService.deleteByIds(ids);
+
+        return success("删除成功");
+
     }
 }

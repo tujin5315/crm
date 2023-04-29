@@ -5,6 +5,7 @@ import com.msbtj.crm.base.ResultInfo;
 import com.msbtj.crm.enums.StateStatus;
 import com.msbtj.crm.query.SaleChanceQuery;
 import com.msbtj.crm.service.SaleChanceService;
+import com.msbtj.crm.utils.AssertUtil;
 import com.msbtj.crm.utils.CookieUtil;
 import com.msbtj.crm.utils.LoginUserUtil;
 import com.msbtj.crm.vo.SaleChance;
@@ -112,5 +113,27 @@ public class SaleChanceController extends BaseController {
         saleChanceService.deleteSaleChance(ids);
         // 返回
         return success("该营销机会已被删除");
+    }
+    /**
+      更新营销机会的开发状态
+       1.判断id是否为空
+       2.查询数据，返回营销机会对象 判断对象是否非空
+       3.更新开发状态  设置更新状态
+       4.执行更新操作，判断受影响的行数
+     */
+    @PostMapping("updateSaleChanceDevResult")
+    @ResponseBody
+    public ResultInfo updateSaleChanceDevResult(Integer id,Integer devResult){
+        // 判断id是否为空
+        AssertUtil.isTrue(null == id,"待营销机会不存在");
+        SaleChance saleChance = saleChanceService.selectByPrimaryKey(id);
+        // 查询数据，返回营销机会对象 判断对象是否非空
+        AssertUtil.isTrue(null == saleChance,"待更新营销机会为空");
+        // 更新开发状态  设置更新状态
+        saleChance.setDevResult(devResult);
+        // 执行更新操作，判断受影响的行数
+        AssertUtil.isTrue(saleChanceService.updateByPrimaryKeySelective(saleChance)!=1,"待营销机会更新状态失败");
+
+        return success("营销机会更新成功");
     }
 }

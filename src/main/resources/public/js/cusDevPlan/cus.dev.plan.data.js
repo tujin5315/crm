@@ -54,7 +54,7 @@ layui.use(['table','layer'],function(){
             layer.confirm('确定删除当前数据？', {icon: 3, title: "开发计划管理"}, function (index) {
                 $.post(ctx+"/cus_dev_plan/delete",{id:obj.data.id},function (data) {
                     if(data.code==200){
-                        layer.msg("操作成功！");
+                        layer.msg("操作成功！",{icon:6});
                         tableIns.reload();
                     }else{
                         layer.msg(data.msg, {icon: 5});
@@ -70,8 +70,8 @@ layui.use(['table','layer'],function(){
     function openAddOrUpdateCusDevPlanDialog(id){
         var url  =  ctx+"/cus_dev_plan/addOrUpdateCusDevPlanPage?saleChanceId="+$("[name='id']").val();
         var title="计划项管理-添加计划项";
-        if(id){
-            url = url+"&id="+id;
+        if(id!=null && id != ''){ //执行更新操作
+            url = url+"&id="+id; // 跳转到更新页面
             title="计划项管理-更新计划项";
         }
         layui.layer.open({
@@ -88,14 +88,17 @@ layui.use(['table','layer'],function(){
 
 
     function updateSaleChanceDevResult(sid,devResult) {
+        // 弹出询问框，确认用户是否执行当前操作
         layer.confirm('确定执行当前操作？', {icon: 3, title: "计划项维护"}, function (index) {
+            // 发送ajax请求，更新营销机会的工作状态
             $.post(ctx+"/sale_chance/updateSaleChanceDevResult",
                 {
                     id:sid,
                     devResult:devResult
                 },function (data) {
                 if(data.code==200){
-                    layer.msg("操作成功！");
+                    layer.msg("操作成功！",{icon:6});
+                    // 关闭窗口(会有两层，所以需要使用closeAll)
                     layer.closeAll("iframe");
                     //刷新父页面
                     parent.location.reload();

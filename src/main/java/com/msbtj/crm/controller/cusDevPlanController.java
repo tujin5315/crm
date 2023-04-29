@@ -78,13 +78,29 @@ public class cusDevPlanController extends BaseController {
         // 返回结果
         return success("计划项更新成功");
     }
+
+    /**
+     * 删除计划项
+     */
+    @PostMapping("delete")
+    @ResponseBody
+    public ResultInfo deleteCusDevPlan(Integer id){
+        // 调用service层方法
+        cusDevPlanService.deleteCusDevPlan(id);
+        // 返回结果
+        return success("计划项删除成功");
+    }
     /**
      * 进入添加或修改的页面
      */
     @RequestMapping("addOrUpdateCusDevPlanPage")
-    public String addOrUpdateCusDevPlanPage(Integer saleChanceId,HttpServletRequest request){
+    public String addOrUpdateCusDevPlanPage(Integer saleChanceId,HttpServletRequest request,Integer id){
         // 将营销机会id设置到请求域中，给计划页面获取
         request.setAttribute("saleChanceId",saleChanceId);
+        // 通过计划项ID查询记录
+        CusDevPlan cusDevPlan = cusDevPlanService.selectByPrimaryKey(id);
+        // 将计划项数据设置到请求域中
+        request.setAttribute("cusDevPlan",cusDevPlan);
         return "cusDevPlan/add_update";
     }
 

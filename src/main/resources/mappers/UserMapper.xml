@@ -138,13 +138,14 @@
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
+  <!-- 按用户名查询用户信息 -->
   <select id="queryUserByName" parameterType="String" resultType="com.msbtj.crm.vo.User">
     select
         <include refid="Base_Column_List" />
         from t_user
     where user_name = #{userName}
   </select>
+  <!-- 查找所有的销售人员 -->
   <select id="queryAllSales" resultType="java.util.Map">
     select
         u.id,u.user_name uname
@@ -165,4 +166,39 @@
     and
         r.role_name = '销售'
   </select>
+  <!--  多条件查询-->
+  <select id="selectByParams" resultType="com.msbtj.crm.vo.User" parameterType="com.msbtj.crm.query.UserQuery">
+    select
+        <include refid="Base_Column_List"/>
+    from
+        t_user
+    <where>
+        is_valid=1
+        <!-- 用户名查询 -->
+      <if test="null!=userName and ''!=userName">
+        and user_name like concat('%',#{userName},'%')
+      </if>
+      <!-- 邮箱查询查询 -->
+      <if test="null!=email and ''!=email">
+        and user_name like concat('%',#{email},'%')
+      </if>
+      <!-- 手机号码查询查询 -->
+      <if test="null!=phone and ''!=phone">
+        and user_name like concat('%',#{phone},'%')
+      </if>
+    </where>
+  </select>
+  <!-- 批量删除用户信息 -->
+  <update id="deleteByIds">
+    update
+        t_user
+    set
+        is_valid = 0
+    where
+        id
+    in  <!-- collection:被循环的类型,item:每个对象的名字,open:左边以什么开头,close:右边以什么结尾,separator:值与值之间的间隔方式  -->
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+          #{id}
+        </foreach>
+  </update>
 </mapper>

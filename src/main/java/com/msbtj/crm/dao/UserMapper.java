@@ -18,4 +18,6 @@ public interface UserMapper extends BaseMapper<User,Integer> {
      */
     public List<Map<String,Object>> queryAllSales();
 
+    public int deleteByIds(Integer[] ids);
+
 }

@@ -3,17 +3,21 @@ package com.msbtj.crm.service;
 import com.msbtj.crm.base.BaseService;
 import com.msbtj.crm.dao.UserMapper;
 import com.msbtj.crm.model.UserModel;
+import com.msbtj.crm.query.UserQuery;
 import com.msbtj.crm.utils.AssertUtil;
 import com.msbtj.crm.utils.Md5Util;
+import com.msbtj.crm.utils.PhoneUtil;
 import com.msbtj.crm.utils.UserIDBase64;
 import com.msbtj.crm.vo.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -140,5 +144,97 @@ public class UserService extends BaseService<User,Integer> {
      */
     public List<Map<String,Object>> queryAllSales(){
         return userMapper.queryAllSales();
+    }
+
+    /**
+     * 用户添加操作
+     *   1、参数校验
+     *      用户名userName 非空且唯一
+     *      邮箱email      非空
+     *      手机号phone    非空，且格式正确
+     *   2、设置参数的默认值
+     *      isValie       有效1
+            createDate    系统当前时间
+            updateDate    更新当前时间
+            默认密码        123456 -- MD5加密
+     *   3、执行添加操作 判断受影响的行数
+     * @return
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void addUser(User user){
+        /* 参数校验 */
+        checkUserQueryParmas(user.getUserName(),user.getEmail(),user.getPhone(),null);
+        /* 设置参数的默认值 */
+        // isValie       有效1
+        user.setIsValid(1);
+        // createDate    系统当前时间
+        user.setCreateDate(new Date());
+        // updateDate    更新当前时间
+        user.setUpdateDate(new Date());
+        // 默认密码        123456 -- MD5加密
+        user.setUserPwd(Md5Util.encode("123456"));
+        // 执行添加操作 判断受影响的行数
+        AssertUtil.isTrue(userMapper.insertSelective(user)!=1,"用户添加失败");
+    }
+    /**
+    用户添加的参数校验
+    * */
+    private void checkUserQueryParmas(String userName, String email, String phone,Integer id) {
+        // 用户名userName 非空
+        AssertUtil.isTrue(StringUtils.isBlank(userName) ,"用户名不能为空");
+        // 检验用户名的唯一性
+        // 通过查询用户对象
+        User temp = userMapper.queryUserByName(userName);
+        // 再检查用户是否存在，若存在，则说明用户名不唯一
+        // 如果是添加操作，数据库中无数据，只要通过名称查到数据，则表示用户名被占用
+        // 如果是修改操作，数据库中有对应的记录，通过用户名查到的数据，可能是当前记录本身，也可能是别的记录
+        // 如果用户名存在，且与当前修改记录不是同一个，则表示其他记录占用了该用户名，不可用
+        AssertUtil.isTrue(null!=temp && !(temp.getId().equals(id)),"用户名已存在");
+        // 邮箱email      非空
+        AssertUtil.isTrue(StringUtils.isBlank(email),"邮箱不能为空");
+        // 手机号phone    非空
+        AssertUtil.isTrue(StringUtils.isBlank(phone),"手机号码不能为空");
+        // 手机号phone     格式是否正确
+        AssertUtil.isTrue(!PhoneUtil.isMobile(phone),"手机号码格式不正确");
+    }
+
+    /**
+      用户更新操作
+        1、参数校验
+            判断用户id是否为空且数据要存在
+            用户名userName     非空且唯一
+            邮箱email         非空
+            手机码号           非空，格式正确
+        2、设置参数的默认值
+            updateDate        系统当前时间
+        3、执行更新操作，判断受影响的行数
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateUser(User user){
+        // 判断用户ID
+        AssertUtil.isTrue(null==user.getId(),"待更新记录不存在");
+        // 数据存在
+        // 通过检查用户信息判别
+        User user1 = userMapper.selectByPrimaryKey(user.getId());
+        AssertUtil.isTrue(null == user1,"待更新记录不存在");
+        // 参数校验
+        checkUserQueryParmas(user.getUserName(),user.getEmail(),user.getPhone(),user.getId());
+        // 设置参数的默认值
+        user.setUpdateDate(new Date());
+        // 执行更新操作 判断受影响的行数
+        AssertUtil.isTrue(userMapper.updateByPrimaryKeySelective(user)!=1,"用户更新失败");
+    }
+
+    /**
+      用户批量删除操作
+        1、参数校验
+            判断id是否为空
+     */
+    public void deleteByIds(Integer[] ids){
+        // 参数检验
+        AssertUtil.isTrue(null == ids || ids.length<1,"待删除用户不存在");
+        // 执行删除操作，判断受影响的行数  因不确定具体要删几条  保证受影响行数和ids的长度一致
+        AssertUtil.isTrue(userMapper.deleteByIds(ids)!=ids.length,"删除记录失败");
+
     }
 }

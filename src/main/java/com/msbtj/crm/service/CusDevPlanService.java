@@ -93,8 +93,26 @@ public class CusDevPlanService extends BaseService<CusDevPlan,Integer> {
         cusDevPlan.setUpdateDate(new Date());
         // 执行更新操作
         AssertUtil.isTrue(cusDevPlanMapper.updateByPrimaryKeySelective(cusDevPlan)!=1,"更新失败！");
+    }
 
-
+    /**
+      计划项删除操作
+        1.判断id是否为空，数据是否存在
+        2.修改isValid属性
+        3.执行更新操作
+      @param id
+     */
+    public void deleteCusDevPlan(Integer id){
+        // 判断id是否为空，数据是否存在
+        AssertUtil.isTrue(null == id,"待删除记录不存在");
+        // 找到查找对象
+        CusDevPlan cusDevPlan = cusDevPlanMapper.selectByPrimaryKey(id);
+        // 修改isValid属性
+        cusDevPlan.setIsValid(0);
+        // 修改更新时间
+        cusDevPlan.setUpdateDate(new Date());
+        // 执行更新操作
+        AssertUtil.isTrue(cusDevPlanMapper.updateByPrimaryKeySelective(cusDevPlan)!=1,"更新失败");
     }
 
     /**
