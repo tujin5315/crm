@@ -35,7 +35,17 @@
       #{isValid,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.msbtj.crm.vo.User">
+  <!--
+  添加操作
+    默认返回受影响的行数，可以设置返回主键
+    useGeneratedKeys:取值范围是false或true，表示的是会获取主键，并赋值到keyProperty属性设置的模型属性(JavaBean实体类中的属性字段)
+    keyProperty：设置返回值将赋值给数据属性的哪个属性字段
+    keyColumn：设置数据库自动生成的主键名
+
+    返回的主键会自动设置到实体类中对应的id属性字段
+
+  -->
+  <insert id="insertSelective" parameterType="com.msbtj.crm.vo.User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into t_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

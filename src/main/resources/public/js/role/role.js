@@ -38,15 +38,22 @@ layui.use(['table','layer'],function(){
     });
 
     // 头工具栏事件
-    table.on('toolbar(roles)',function (obj) {
-        switch (obj.event) {
-            case "add":
+    table.on('toolbar(roles)',function (data) {
+        switch (data.event) {
+            case "add": // 添加事件
                 openAddOrUpdateRoleDialog();
+                break;
+            case "grant": // 授权操作
+                // 获取记录表格中的数据
+                var checkStatus = table.checkStatus(data.config.id);
+                // 打开授权的对话框
+                openADDGrantDialog(checkStatus.data);
                 break;
         }
     });
 
-
+    // 行工具栏事件
+    // 删除角色
     table.on('tool(roles)',function (obj) {
         var layEvent =obj.event;
         if(layEvent === "edit"){
@@ -66,22 +73,50 @@ layui.use(['table','layer'],function(){
     });
 
 
-
-
+    /**
+     * 添加/更新操作
+     * @param id
+     */
     function openAddOrUpdateRoleDialog(id) {
         var title="角色管理-角色添加";
         var url=ctx+"/role/addOrUpdateRolePage";
         if(id){
             title="角色管理-角色更新";
-            url=url+"?id="+id;
+            url=url+"?roleId="+id;
         }
         layui.layer.open({
             title:title,
             type:2,
-            area:["700px","500px"],
+            area:["400px","450px"],
             maxmin:true,
             content:url
         })
+    }
+
+    /**
+     * 打开授权页面
+     */
+    function openADDGrantDialog(data){
+        // 首先需要判断是否打开了页面
+        if(data.length==0){
+            layer.msg("请选择一个角色进行授权",{icon:5});
+            return;
+        }
+        // 一次性只能给一名角色进行授权
+        if(data.length>1){
+            layer.msg("暂不支持多角色授权",{icon:5});
+            return;
+        }
+        var url = ctx + "/module/toAddGrantPage?roleId="+data[0].id;
+        var title = "角色管理 -- 角色授权"
+        layui.layer.open({
+            title:title,
+            content:url,
+            area:["600px","400px"],
+            maxmin:true,
+            type:2
+        })
+
     }
 
 

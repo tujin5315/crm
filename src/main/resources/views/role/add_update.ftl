@@ -5,6 +5,7 @@
 </head>
 <body class="childrenBody">
 <form class="layui-form" style="width:80%;">
+    <#--  作用域，传递id 判断是添加角色信息还是更新角色信息  -->
     <input name="id" type="hidden" value="${(role.id)!}"/>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">角色名</label>

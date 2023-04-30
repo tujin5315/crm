@@ -118,4 +118,26 @@
     where
       r1.is_valid = 1
   </select>
+
+  <!--  多条件查询-->
+  <select id="selectByParams" parameterType="com.msbtj.crm.query.RoleQuery" resultType="com.msbtj.crm.vo.Role">
+    select
+    <include refid="Base_Column_List"/>
+    from
+    t_role
+    where
+    is_valid = 1
+    <if test=" null != roleName and '' != roleName">
+      and role_name like concat ('%',#{roleName},'%')
+    </if>
+  </select>
+  <!-- 根据角色名查询角色信息 -->
+  <select id="selectByRoleName" resultType="com.msbtj.crm.vo.Role" parameterType="string">
+    select
+        <include refid="Base_Column_List"/>
+    from
+        t_role
+    where
+        role_name = #{roleName}
+  </select>
 </mapper>

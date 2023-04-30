@@ -6,7 +6,9 @@ import com.msbtj.crm.vo.Role;
 import java.util.List;
 import java.util.Map;
 
-public interface RoleMapper extends BaseMapper {
+public interface RoleMapper extends BaseMapper<Role,Integer> {
     // 只需要id与roleName
     public List<Map<String,Object>> queryAllRoles(Integer userId);
+
+    Role selectByRoleName(String roleName);
 }
