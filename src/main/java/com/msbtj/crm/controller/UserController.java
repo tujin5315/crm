@@ -1,17 +1,17 @@
 package com.msbtj.crm.controller;
 
+import com.msbtj.crm.annotation.RequiredPermission;
 import com.msbtj.crm.base.BaseController;
 import com.msbtj.crm.base.ResultInfo;
-import com.msbtj.crm.exceptions.ParamsException;
 import com.msbtj.crm.model.UserModel;
 import com.msbtj.crm.query.UserQuery;
 import com.msbtj.crm.service.UserService;
 import com.msbtj.crm.utils.LoginUserUtil;
 import com.msbtj.crm.vo.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -126,6 +126,7 @@ public class UserController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("list")
+    @RequiredPermission(code="101001")
     public Map<String,Object> selectByParams(UserQuery userQuery){
         return userService.queryByParamsForTable(userQuery);
     }
@@ -159,6 +160,7 @@ public class UserController extends BaseController {
      */
     @ResponseBody
     @PostMapping("add")
+    @RequiredPermission(code="101002")
     public ResultInfo addUser(User user){
         userService.addUser(user);
         return success("用户添加成功");
@@ -170,6 +172,7 @@ public class UserController extends BaseController {
      */
     @ResponseBody
     @PostMapping("update")
+    @RequiredPermission(code="101004")
     public ResultInfo updateUser(User user){
         userService.updateUser(user);
         return success("用户更新成功");
@@ -179,6 +182,7 @@ public class UserController extends BaseController {
      */
     @PostMapping("delete")
     @ResponseBody
+    @RequiredPermission(code="101003")
     public ResultInfo delete(Integer[] ids){
         userService.deleteByIds(ids);
 

@@ -15,8 +15,10 @@
 						   class="layui-input
 					searchVal" placeholder="角色名" />
 				</div>
+				<#if permission?seq_contains("602002")>
 				<a class="layui-btn search_btn" data-type="reload"><i
 							class="layui-icon">&#xe615;</i> 搜索</a>
+				</#if>
 			</div>
 		</form>
 	</blockquote>
@@ -24,20 +26,28 @@
 
 	<script type="text/html" id="toolbarDemo">
 		<div class="layui-btn-container">
+			<#if permission?seq_contains("602001")>
 			<a class="layui-btn layui-btn-normal addNews_btn" lay-event="add">
 				<i class="layui-icon">&#xe608;</i>
 				添加角色
 			</a>
+			</#if>
+<#--			<#if permission?seq_contains("602005")>-->
 			<a class="layui-btn layui-btn-normal delNews_btn" lay-event="grant">
 				<i class="layui-icon">&#xe672;</i>
 				授权
 			</a>
+<#--			</#if>-->
 		</div>
 	</script>
 	<!--操作-->
 	<script id="roleListBar" type="text/html">
+		<#if permission?seq_contains("602003")>
 		<a class="layui-btn layui-btn-xs" id="edit" lay-event="edit">编辑</a>
+		</#if>
+		<#if permission?seq_contains("602004")>
 		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+		</#if>
 	</script>
 </form>
 <script type="text/javascript" src="${ctx}/js/role/role.js"></script>

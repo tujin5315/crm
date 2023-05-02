@@ -183,4 +183,49 @@
     where
         is_valid = 1
   </select>
+<!-- 查询所有资源 -->
+  <select id="queryModules" resultType="com.msbtj.crm.vo.Module">
+    select
+      <include refid="Base_Column_List"/>
+    from
+      t_module
+    where
+      is_valid = 1
+  </select>
+<!-- 通过菜单名称查找同层级下的资源信息 -->
+  <select id="queryModuleByGradeAndModuleName" resultType="com.msbtj.crm.vo.Module">
+    select
+        <include refid="Base_Column_List"></include>
+    from
+        t_module
+    where
+        is_valid = 1 and grade = #{grade} and module_name = #{moduleName}
+  </select>
+<!-- 通过url地址查找同层级下的资源信息 -->
+  <select id="queryModuleByGradeAndUrl" resultType="com.msbtj.crm.vo.Module">
+    select
+        <include refid="Base_Column_List"></include>
+    from
+        t_module
+    where
+        is_valid = 1 and grade = #{grade} and url = #{url}
+  </select>
+<!-- 通过权限码查找资源信息 -->
+  <select id="queryModuleByOptValue" resultType="com.msbtj.crm.vo.Module">
+    select
+        <include refid="Base_Column_List"></include>
+    from
+        t_module
+    where
+        is_valid = 1 and opt_value = #{optValue}
+  </select>
+  <!-- 通过父id查询拥有的子资源数量 -->
+  <select id="queryModuleByParentId" parameterType="int" resultType="java.lang.Integer">
+    select
+        count(1)
+    from
+        t_module
+    where
+        is_valid = 1 and parent_id = #{parentId}
+  </select>
 </mapper>

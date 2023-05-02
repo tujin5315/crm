@@ -2,6 +2,7 @@ package com.msbtj.crm;
 
 import com.alibaba.fastjson.JSON;
 import com.msbtj.crm.base.ResultInfo;
+import com.msbtj.crm.exceptions.AuthException;
 import com.msbtj.crm.exceptions.NoLoginException;
 import com.msbtj.crm.exceptions.ParamsException;
 import org.apache.catalina.connector.Response;
@@ -66,6 +67,13 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                     mv.addObject("code",p.getCode());
                     mv.addObject("msg",p.getMsg());
                 }
+                // 判断是否为权限认证异常
+                else if (e instanceof AuthException) {
+                    AuthException a = (AuthException) e;
+                    // 设置异常信息
+                    mv.addObject("code",a.getCode());
+                    mv.addObject("msg",a.getMsg());
+                }
                 return mv;
             }else {
                 /**
@@ -80,6 +88,11 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                     ParamsException p = (ParamsException) e;
                     resultInfo.setMsg(p.getMsg());
                     resultInfo.setCode(p.getCode());
+                } else if (e instanceof AuthException) {
+                    AuthException a = (AuthException) e;
+                    resultInfo.setMsg(a.getMsg());
+                    resultInfo.setCode(a.getCode());
+
                 }
                 // 设置响应类型以及编码格式
                 response.setContentType("application/json;charset=UTF-8");

@@ -22,8 +22,10 @@
 					<input type="text" name="phone" class="layui-input
 					searchVal" placeholder="手机号" />
 				</div>
+				<#if permission?seq_contains("601002")>
 				<a class="layui-btn search_btn" data-type="reload"><i
 							class="layui-icon">&#xe615;</i> 搜索</a>
+				</#if>
 			</div>
 		</form>
 	</blockquote>
@@ -31,21 +33,29 @@
 	<#--头部监听事件   有添加和删除功能	-->
 	<script type="text/html" id="toolbarDemo">
 		<div class="layui-btn-container">
+			<#if permission?seq_contains("601001")>
 			<a class="layui-btn layui-btn-normal addNews_btn" lay-event="add">
 				<i class="layui-icon">&#xe608;</i>
 				添加用户
 			</a>
+			</#if>
+			<#if permission?seq_contains("601004")>
 			<a class="layui-btn layui-btn-normal delNews_btn" lay-event="del">
 				<i class="layui-icon">&#xe608;</i>
 				删除用户
 			</a>
+			</#if>
 		</div>
 	</script>
 	<!--操作-->
 	<#-- 行监听工具栏  -->
 	<script id="userListBar" type="text/html">
+		<#if permission?seq_contains("601003")>
 		<a class="layui-btn layui-btn-xs" id="edit" lay-event="edit">编辑</a>
+		</#if>
+		<#if permission?seq_contains("601004")>
 		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+		</#if>
 	</script>
 </form>
 <script type="text/javascript" src="${ctx}/js/user/user.js"></script>

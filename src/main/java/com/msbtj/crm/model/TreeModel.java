@@ -2,7 +2,7 @@ package com.msbtj.crm.model;
 
 public class TreeModel {
     private Integer id;
-    private Integer pid;
+    private Integer pId;
     private String name;
     private boolean checked = false ;   // 复选框是否被勾选，如果是true，则勾选；如果是false，则不勾选
 
@@ -14,12 +14,12 @@ public class TreeModel {
         this.id = id;
     }
 
-    public Integer getPid() {
-        return pid;
+    public Integer getpId() {
+        return pId;
     }
 
-    public void setPid(Integer pid) {
-        this.pid = pid;
+    public void setpId(Integer pId) {
+        this.pId = pId;
     }
 
     public String getName() {

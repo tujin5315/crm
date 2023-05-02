@@ -77,3 +77,66 @@ function zTreeOnCheck(event, treeId, treeNode) {
     })
 
 }
+
+/*
+$(function () {
+    loadModuleInfo();
+});
+
+
+var zTreeObj;
+function loadModuleInfo() {
+    // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+    var setting = {
+        check: {
+            enable: true
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        //绑定函数
+        callback:{
+            onCheck:zTreeOnCheck
+        }
+    }
+    $.ajax({
+        type: "get",
+        url: ctx + "/module/queryAllModules",
+        data:{
+            roleId: $("input[name='roleId']").val(),
+        },
+        dataType: "json",
+        success: function (data) {
+            zTreeObj = $.fn.zTree.init($("#test1"), setting, data);
+        }
+    });
+}
+
+
+function zTreeOnCheck(event, treeId, treeNode) {
+    //alert(treeNode.tId + ", " + treeNode.name + "," + treeNode.checked);
+    var nodes= zTreeObj.getCheckedNodes(true);
+    //判断并遍历徇众的节点集合
+    var mids = "mids=";
+    for(var i=0;i<nodes.length;i++){
+        if(i < nodes.length-1){
+            mids += nodes[i].id+"&mIds=";
+        }else{
+            mids += nodes[i].id;
+        }
+    }
+
+    var roleId=$("[name='roleId']").val();
+    $.ajax({
+        type:"post",
+        url:ctx+"/role/addGrant",
+        data:mids+"&roleId="+roleId,
+        dataType:"json",
+        success:function (data) {
+            console.log(data);
+        }
+    })
+
+}*/
