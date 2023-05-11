@@ -151,6 +151,7 @@
       </if>
     </where>
   </select>
+  <!-- 通过订单id查询订单信息 -->
   <select id="queryOrderByOrderId" resultType="java.util.Map" parameterType="int">
     select
       o.id,
@@ -173,5 +174,13 @@
       od.is_valid = 1
       and
       o.id = #{orderId}
+  </select>
+  <!-- 通过客户id查询该客户的最新订单记录 -->
+  <select id="queryCustomerOrderByCustomerId" parameterType="int" resultType="com.msbtj.crm.vo.CustomerOrder">
+  select
+  <include refid="Base_Column_List"/>
+  from t_customer_order
+  where cus_id=#{cusId}
+  ORDER BY order_date desc limit 1
   </select>
 </mapper>

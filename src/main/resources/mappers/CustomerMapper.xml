@@ -354,4 +354,33 @@
     where
         is_valid = 1 and name = #{customerName}
   </select>
+  <!-- 查询流失客户的数据 -->
+  <select id="queryLossCustomer" resultType="com.msbtj.crm.vo.Customer">
+    SELECT
+      *
+    FROM
+      t_customer c
+    WHERE
+      c.is_valid = 1
+      AND c.state = 0
+      AND DATE_ADD( c.create_date, INTERVAL 6 MONTH ) &lt; NOW()
+      AND c.id NOT IN (
+      SELECT DISTINCT
+        o.cus_id
+      FROM
+        t_customer_order o
+      WHERE
+        o.is_valid = 1
+        AND o.state
+        AND DATE_ADD( o.order_date, INTERVAL 6 MONTH ) &gt; NOW()
+    )
+  </select>
+  <!-- 通过客户id批量更新客户流失状态 -->
+  <update id="updateCustomerStateByIds" parameterType="list">
+    update t_customer set state=1
+    where id in
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
 </mapper>

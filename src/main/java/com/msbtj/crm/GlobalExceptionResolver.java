@@ -49,7 +49,7 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
         mv.addObject("code",500);
         mv.addObject("msg","系统异常，请重试...");
 
-        // 判断handkerMethod
+        // 判断handlerMethod
         if(handler instanceof HandlerMethod){
             // 类型转换
             HandlerMethod handlerMethod = (HandlerMethod) handler;
